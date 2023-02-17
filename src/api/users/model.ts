@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { UserDocument, UserModel } from "./types";
 
 const { Schema, model } = mongoose;
 
@@ -33,9 +34,8 @@ UsersSchema.pre("save", async function (next) {
   const currentUser = this;
 
   if (currentUser.isModified("password")) {
-    const plainPW = currentUser.password;
-
-    const hash: Promise<string> = await bcrypt.hash(plainPW, 11);
+    const plainPW: string = currentUser.password!;
+    const hash = await bcrypt.hash(plainPW, 11);
     currentUser.password = hash;
   }
 
@@ -53,20 +53,23 @@ UsersSchema.methods.toJSON = function () {
   return user;
 };
 
-UsersSchema.static("checkCredentials", async function (email, password) {
-  const user = await this.findOne({ email });
+UsersSchema.static(
+  "checkCredentials",
+  async function (email: string, password: string) {
+    const user: UserDocument = await this.findOne({ email });
 
-  if (user) {
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (user) {
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-    if (passwordMatch) {
-      return user;
+      if (passwordMatch) {
+        return user;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
-  } else {
-    return null;
   }
-});
+);
 
-export default model("User", UsersSchema);
+export default model<UserDocument, UserModel>("User", UsersSchema);

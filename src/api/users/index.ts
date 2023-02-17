@@ -4,7 +4,6 @@ import { adminOnlyMiddleware } from "../../lib/auth/adminOnly";
 import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth";
 import { createAccessToken } from "../../lib/auth/tools";
 import UsersModel from "./model";
-import passport from "passport";
 import AccommodationsModel from "../accommodations/model";
 // import q2m from "query-to-mongo";
 
@@ -14,7 +13,7 @@ usersRouter.post("/register", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UsersModel.findOne({ email });
-    UsersModel.
+
     const userCridentials = await UsersModel.checkCredentials(email, password);
 
     if (user && userCridentials) {
@@ -50,21 +49,6 @@ usersRouter.get(
     } catch (error) {
       next(error);
     }
-  }
-);
-usersRouter.get(
-  "/googleLogin",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-usersRouter.get(
-  "/googleRedirect",
-  passport.authenticate("google", { session: false }),
-  async (req, res, next) => {
-    console.log(req.user);
-    // res.send({ accessToken: req.user.accessToken });
-    res.redirect(
-      `${process.env.FE_DEV_URL}?accessToken=${req.user.accessToken}`
-    );
   }
 );
 

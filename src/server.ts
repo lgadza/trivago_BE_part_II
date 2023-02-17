@@ -9,13 +9,11 @@ import {
   notFoundErrorHandler,
   unauthorizedErrorHandler,
 } from "./errorHandlers";
-import googleStrategy from "./lib/auth/google.js";
 import passport from "passport";
 import accommodationRouter from "./api/accommodations";
 
 const server = express();
 const port = process.env.PORT || 3001;
-passport.use("google", googleStrategy);
 
 // ***************************** MIDDLEWARES ***************************
 server.use(cors());
