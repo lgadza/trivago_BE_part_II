@@ -1,10 +1,14 @@
 import createHttpError from "http-errors";
-import { ErrorRequestHandler } from "express";
+import { RequestHandler } from "express";
+import { TokenPayload } from "./tools";
 
-export const adminOnlyMiddleware: ErrorRequestHandler = (req, res, next) => {
-  if (req.user.role === "Host") {
+interface UserRequest extends Request {
+  user?: TokenPayload;
+}
+export const adminOnlyMiddleware: RequestHandler = (req, res, next) => {
+  if (req.user.role === "Admin") {
     next();
   } else {
-    next(createHttpError(403, "Host only endpoint!"));
+    next(createHttpError(403, "Admin only endpoint!"));
   }
 };
