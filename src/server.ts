@@ -2,16 +2,16 @@ import express from "express";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import cors from "cors";
-import usersRouter from "./api/users/index.js";
+import usersRouter from "./api/users";
 import {
   forbiddenErrorHandler,
   genericErroHandler,
   notFoundErrorHandler,
   unauthorizedErrorHandler,
-} from "./errorHandlers.js";
+} from "./errorHandlers";
 import googleStrategy from "./lib/auth/google.js";
 import passport from "passport";
-import accommodationRouter from "./api/accommodations/index.js";
+import accommodationRouter from "./api/accommodations";
 
 const server = express();
 const port = process.env.PORT || 3001;
@@ -31,7 +31,7 @@ server.use(unauthorizedErrorHandler);
 server.use(forbiddenErrorHandler);
 server.use(genericErroHandler);
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL!);
 
 mongoose.connection.on("connected", () => {
   console.log("Successfully connected to Mongo!");
@@ -41,3 +41,4 @@ mongoose.connection.on("connected", () => {
     console.log(`Server is running on port ${port}`);
   });
 });
+export { server };

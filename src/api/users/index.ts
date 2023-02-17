@@ -3,9 +3,9 @@ import createHttpError from "http-errors";
 import { adminOnlyMiddleware } from "../../lib/auth/adminOnly.js";
 import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
 import { createAccessToken } from "../../lib/auth/tools.js";
-import UsersModel from "./model.js";
+import UsersModel from "./model";
 import passport from "passport";
-import AccommodationsModel from "../accommodations/model.js";
+import AccommodationsModel from "../accommodations/model";
 import q2m from "query-to-mongo";
 
 const usersRouter = express.Router();
