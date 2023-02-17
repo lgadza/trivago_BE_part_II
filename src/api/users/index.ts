@@ -42,7 +42,7 @@ usersRouter.get(
   "/",
   JWTAuthMiddleware,
   adminOnlyMiddleware,
-  async (req, res, next) => {
+  async (req: any, res: any, next: any) => {
     try {
       const users = await UsersModel.find({});
       res.send(users);
@@ -114,29 +114,6 @@ usersRouter.get("/:userId", JWTAuthMiddleware, async (req, res, next) => {
     next(error);
   }
 });
-usersRouter.put(
-  "/:userId",
-  JWTAuthMiddleware,
-  adminOnlyMiddleware,
-  async (req, res, next) => {
-    try {
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-usersRouter.delete(
-  "/:userId",
-  JWTAuthMiddleware,
-  adminOnlyMiddleware,
-  async (req, res, next) => {
-    try {
-    } catch (error) {
-      next(error);
-    }
-  }
-);
 
 usersRouter.post("/login", async (req, res, next) => {
   try {

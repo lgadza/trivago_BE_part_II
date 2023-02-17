@@ -1,6 +1,4 @@
 import express from "express";
-import listEndpoints from "express-list-endpoints";
-import mongoose from "mongoose";
 import cors from "cors";
 import usersRouter from "./api/users";
 import {
@@ -11,32 +9,23 @@ import {
 } from "./errorHandlers";
 import passport from "passport";
 import accommodationRouter from "./api/accommodations";
+import { createServer } from "http";
+const expressServer = express();
 
-const server = express();
-const port = process.env.PORT || 3001;
-
+// *****************SOCKET>IO**************************
+const httpServer = createServer(expressServer);
 // ***************************** MIDDLEWARES ***************************
-server.use(cors());
-server.use(express.json());
-server.use(passport.initialize());
+expressServer.use(cors());
+expressServer.use(express.json());
+expressServer.use(passport.initialize());
 // ****************************** ENDPOINTS ****************************
-server.use("/users", usersRouter);
-server.use("/accommodations", accommodationRouter);
+expressServer.use("/users", usersRouter);
+expressServer.use("/accommodations", accommodationRouter);
 
 // *************************** ERROR HANDLERS **************************
-server.use(notFoundErrorHandler);
-server.use(unauthorizedErrorHandler);
-server.use(forbiddenErrorHandler);
-server.use(genericErroHandler);
+expressServer.use(notFoundErrorHandler);
+expressServer.use(unauthorizedErrorHandler);
+expressServer.use(forbiddenErrorHandler);
+expressServer.use(genericErroHandler);
 
-mongoose.connect(process.env.MONGO_URL!);
-
-mongoose.connection.on("connected", () => {
-  console.log("Successfully connected to Mongo!");
-
-  server.listen(port, () => {
-    console.table(listEndpoints(server));
-    console.log(`Server is running on port ${port}`);
-  });
-});
-export { server };
+export { expressServer, httpServer };

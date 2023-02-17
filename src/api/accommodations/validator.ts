@@ -1,5 +1,6 @@
 import { checkSchema, validationResult } from "express-validator";
 import createHttpError from "http-errors";
+import { ErrorRequestHandler } from "express";
 
 const accommodationSchema = {
   name: {
@@ -24,7 +25,7 @@ const accommodationSchema = {
 };
 
 export const checkAccommodationSchema = checkSchema(accommodationSchema);
-export const triggerBadRequest = (req, res, next) => {
+export const triggerBadRequest: ErrorRequestHandler = (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
