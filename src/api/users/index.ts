@@ -6,7 +6,7 @@ import { createAccessToken } from "../../lib/auth/tools.js";
 import UsersModel from "./model";
 import passport from "passport";
 import AccommodationsModel from "../accommodations/model";
-import q2m from "query-to-mongo";
+// import q2m from "query-to-mongo";
 
 const usersRouter = express.Router();
 
