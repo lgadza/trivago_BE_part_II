@@ -1,8 +1,8 @@
 import express from "express";
 import createHttpError from "http-errors";
-import { adminOnlyMiddleware } from "../../lib/auth/adminOnly.js";
-import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth.js";
-import { createAccessToken } from "../../lib/auth/tools.js";
+import { adminOnlyMiddleware } from "../../lib/auth/adminOnly";
+import { JWTAuthMiddleware } from "../../lib/auth/jwtAuth";
+import { createAccessToken } from "../../lib/auth/tools";
 import UsersModel from "./model";
 import passport from "passport";
 import AccommodationsModel from "../accommodations/model";
@@ -14,6 +14,7 @@ usersRouter.post("/register", async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UsersModel.findOne({ email });
+    UsersModel.
     const userCridentials = await UsersModel.checkCredentials(email, password);
 
     if (user && userCridentials) {
